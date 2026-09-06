@@ -1,14 +1,14 @@
 # pretty ls
 
-A pretty ls replacement **made in Rust**, inspired by the nushell ls.
+A pretty ls replacement **made in Rust🏳️‍🌈**, inspired by the nushell ls.
 
-## Roadmap:
+## Roadmap
 
 + \[in progress\] Make sure every single soul using this knows its written in rust
-+ \[done\] Make it actually work
-+ \[done\] Make it a table
-+ \[done\] Add -a
-+ \[done\] Add -g
++ ✅ Make it actually work
++ ✅ Make it a table
++ ✅ Add -a
++ ✅ Add -g
 + Sorting
 + Icons
 + Colors
