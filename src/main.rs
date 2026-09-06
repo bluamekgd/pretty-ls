@@ -17,21 +17,15 @@ fn main() -> std::io::Result<()> {
         files.push(entry.file_name().to_string_lossy().into_owned());
     }
 
-    // Indexes list (like the numbers for the files)
-    let indexes: Vec<_> = (1..=files.len()).collect();
-    println!("{:?}", indexes);
-
     let mut table = Table::new();
     table
         .load_style(UTF8_FULL.with_rounded_corners())
-        .set_header(vec!["#", "File"]);
+        .set_header(vec!["#", "File", "#"]);
 
     for (i, file) in files.iter().enumerate() {
-        table.add_row(vec![(i + 1).to_string(), file.to_string()]);
+        table.add_row(vec![(i + 1).to_string(), file.to_string(), (i + 1).to_string()]);
     }
 
     println!("{table}");
-    println!("{:?}", directory);
-    println!("{:?}", files);
     Ok(())
 }
