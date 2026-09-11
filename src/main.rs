@@ -59,7 +59,7 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "yml" => "",
     "toml" => "",
     "xml" => "󰗀",
-    "lock" => "",
+    "lock" => "",
 
     // Documentation
     "md" => "󰈙",
@@ -115,16 +115,33 @@ static SPECIAL_ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "Dockerfile" => "",
     "Makefile" => "",
     ".gitignore" => "",
+    ".env" => "",
 };
+
+fn icon_for(path: &std::path::Path, name: &str) -> &'static str {
+    if path.is_dir() {
+        return "󰉋";
+    }
+
+    if let Some(icon) = SPECIAL_ICONS.get(name) {
+        return icon;
+    }
+
+    path.extension()
+        .and_then(|ext| ext.to_str())
+        .and_then(|ext| ICONS.get(ext))
+        .copied()
+        .unwrap_or("󰈙")
+}
 
 fn main() -> std::io::Result<()> {
 
-    let args = Args::parse();
-    let directory = args.path;
+        let args = Args::parse();
+        let directory = args.path;
 
-    let mut files = Vec::new();
+        let mut files = Vec::new();
 
-    for entry in fs::read_dir(&directory)? {
+        for entry in fs::read_dir(&directory)? {
         let entry = entry?;
         let name = entry.file_name().to_string_lossy().into_owned();
         let path = entry.path();
@@ -132,10 +149,12 @@ fn main() -> std::io::Result<()> {
         if !args.all && name.starts_with(".") {
             continue;
         }
+
         if args.gitignore && is_ignored!(&path) {
             continue;
         }
-        files.push(name.clone());
+
+        files.push((name, path));
     }
 
     let mut table = Table::new();
@@ -143,8 +162,14 @@ fn main() -> std::io::Result<()> {
         .load_style(UTF8_FULL_CONDENSED.with_rounded_corners())
         .set_header(vec!["#", "File", "#"]);
 
-    for (i, file) in files.iter().enumerate() {
-        table.add_row(vec![(i + 1).to_string(), file.to_string(), (i + 1).to_string()]);
+    for (i, (file, path)) in files.iter().enumerate() {
+        let icon = icon_for(path, file);
+
+        table.add_row(vec![
+            (i + 1).to_string(),
+            format!("{icon} {file}"),
+            (i + 1).to_string(),
+        ]);
     }
 
     println!("{table}");
