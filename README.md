@@ -12,5 +12,5 @@ A pretty ls replacement **made in ~200 lines of Rust 🏳️‍🌈**, inspired 
 + ✅ Icons
 + Colors
 + Add --long
-+ Sorting
++ Sorting (hell)
 
