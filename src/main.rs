@@ -166,9 +166,9 @@ fn main() -> std::io::Result<()> {
         let icon = icon_for(path, file);
 
         table.add_row(vec![
-            (i + 1).to_string(),
-            format!("{icon} {file}"),
-            (i + 1).to_string(),
+            Cell::new((i + 1).to_string()),
+            Cell::new(format!("{icon} {file}")),
+            Cell::new((i + 1).to_string()),
         ]);
     }
 
