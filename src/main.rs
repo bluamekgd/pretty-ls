@@ -289,8 +289,8 @@ fn main() -> std::io::Result<()> {
 
         if args.long {
             row.push(Cell::new(permissions_string(path)?));
-            row.push(Cell::new(owner.clone()));
-            row.push(Cell::new(group.clone()));
+            row.push(Cell::new(owner));
+            row.push(Cell::new(group));
         }
 
         // name
