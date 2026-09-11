@@ -131,7 +131,7 @@ fn icon_for(path: &std::path::Path, name: &str) -> &'static str {
         .and_then(|ext| ext.to_str())
         .and_then(|ext| ICONS.get(ext))
         .copied()
-        .unwrap_or("󰈙")
+        .unwrap_or("󰈔")
 }
 
 fn main() -> std::io::Result<()> {
