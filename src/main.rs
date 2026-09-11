@@ -111,6 +111,12 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "img" => "",
 };
 
+static SPECIAL_ICONS: phf::Map<&'static str, &'static str> = phf_map! {
+    "Dockerfile" => "",
+    "Makefile" => "",
+    ".gitignore" => "",
+};
+
 fn main() -> std::io::Result<()> {
 
     let args = Args::parse();
