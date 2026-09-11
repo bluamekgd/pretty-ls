@@ -9,8 +9,8 @@ A pretty ls replacement **made in Rust 🏳️‍🌈**, inspired by the nushell
 + ✅ Make it a table
 + ✅ Add -a
 + ✅ Add -g
-+ Sorting
 + Icons
 + Colors
 + Add --long
++ Sorting
 

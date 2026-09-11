@@ -28,16 +28,16 @@ fn main() -> std::io::Result<()> {
 
     for entry in fs::read_dir(&directory)? {
         let entry = entry?;
-        let fname = entry.file_name().to_string_lossy().into_owned();
-        let fpath = entry.path();
+        let name = entry.file_name().to_string_lossy().into_owned();
+        let path = entry.path();
 
-        if !args.all && fname.starts_with(".") {
+        if !args.all && name.starts_with(".") {
             continue;
         }
-        if args.gitignore && is_ignored!(&fpath) {
+        if args.gitignore && is_ignored!(&path) {
             continue;
         }
-        files.push(fname.clone());
+        files.push(name.clone());
     }
 
     let mut table = Table::new();
