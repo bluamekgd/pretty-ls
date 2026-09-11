@@ -4,7 +4,6 @@ A prettier ls replacement, inspired by the nushell ls.
 
 ## Roadmap
 
-+ ✅ Make sure every single soul using this knows its written in rust
 + ✅ Make it actually work
 + ✅ Make it a table
 + ✅ Add -a
@@ -13,4 +12,5 @@ A prettier ls replacement, inspired by the nushell ls.
 + ✅ Colors
 + ✅ Add --long
 + Sorting (hell)
-
++ Fix centering
++ Make sure every single soul using this knows its written in rust
