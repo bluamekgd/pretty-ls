@@ -4,6 +4,7 @@ use comfy_table::*;
 use comfy_table::presets::UTF8_FULL_CONDENSED;
 use clap::Parser;
 use ignored::is_ignored;
+use phf::phf_map;
 
 #[derive(Parser, Debug)]
 #[command(about, version)]
@@ -19,95 +20,96 @@ struct Args {
     gitignore: bool,
 }
 
-static ICONS: &[(&str, &str)] = &[
+static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
+
     // Programming languages
-    ("rs", ""),
-    ("py", ""),
-    ("js", ""),
-    ("ts", ""),
-    ("jsx", ""),
-    ("tsx", ""),
-    ("c", ""),
-    ("h", ""),
-    ("cpp", ""),
-    ("java", ""),
-    ("kt", ""),
-    ("go", ""),
-    ("lua", ""),
-    ("rb", ""),
-    ("php", ""),
-    ("sh", ""),
-    ("bash", ""),
-    ("nix", "󱄅"),
+    "rs" => "",
+    "py" => "",
+    "js" => "",
+    "ts" => "",
+    "jsx" => "",
+    "tsx" => "",
+    "c" => "",
+    "h" => "",
+    "cpp" => "",
+    "java" => "",
+    "kt" => "",
+    "go" => "",
+    "lua" => "",
+    "rb" => "",
+    "php" => "",
+    "sh" => "",
+    "bash" => "",
+    "nix" => "󱄅",
 
     // Web
-    ("html", ""),
-    ("css", ""),
-    ("scss", ""),
+    "html" => "",
+    "css" => "",
+    "scss" => "",
 
     // Fonts
-    ("otf", ""),
-    ("ttf", ""),
-    ("woff2", ""),
-    ("woff", ""),
+    "otf" => "",
+    "ttf" => "",
+    "woff2" => "",
+    "woff" => "",
 
     // Data / config
-    ("json", ""),
-    ("yaml", ""),
-    ("yml", ""),
-    ("toml", ""),
-    ("xml", "󰗀"),
-    ("lock", ""),
+    "json" => "",
+    "yaml" => "",
+    "yml" => "",
+    "toml" => "",
+    "xml" => "󰗀",
+    "lock" => "",
 
     // Documentation
-    ("md", "󰈙"),
-    ("txt", "󰈙"),
+    "md" => "󰈙",
+    "txt" => "󰈙",
 
     // Documents
-    ("pdf", "󰈙"),
-    ("docx", "󰈙"),
-    ("rtf", "󰈙"),
-    ("odt", "󰈙"),
-    ("epub", ""),
-    ("pptx", "󰐨"),
-    ("xlsx", "󰧷"),
+    "pdf" => "󰈙",
+    "docx" => "󰈙",
+    "rtf" => "󰈙",
+    "odt" => "󰈙",
+    "epub" => "",
+    "pptx" => "󰐨",
+    "xlsx" => "󰧷",
 
     // Archives
-    ("zip", ""),
-    ("7z", ""),
-    ("rar", ""),
-    ("tar", ""),
-    ("gz", ""),
-    ("xz", ""),
-    ("bz2", ""),
-    ("zst", ""),
+    "zip" => "",
+    "7z" => "",
+    "rar" => "",
+    "tar" => "",
+    "gz" => "",
+    "xz" => "",
+    "bz2" => "",
+    "zst" => "",
 
     // Images
-    ("png", ""),
-    ("jpg", ""),
-    ("jpeg", ""),
-    ("gif", ""),
-    ("svg", ""),
-    ("webp", ""),
-    ("ico", ""),
-    ("bmp", ""),
-    ("avif", ""),
+    "png" => "",
+    "jpg" => "",
+    "jpeg" => "",
+    "gif" => "",
+    "svg" => "",
+    "webp" => "",
+    "ico" => "",
+    "bmp" => "",
+    "avif" => "",
 
     // Audio / video
-    ("mp3", ""),
-    ("wav", ""),
-    ("ogg", ""),
-    ("flac", ""),
-    ("m4a", ""),
-    ("opus", ""),
-    ("mp4", ""),
-    ("mkv", ""),
-    ("mov", ""),
+    "mp3" => "",
+    "wav" => "",
+    "ogg" => "",
+    "flac" => "",
+    "m4a" => "",
+    "opus" => "",
+    "mp4" => "",
+    "mkv" => "",
+    "mov" => "",
 
     // Disk images
-    ("iso", ""),
-    ("img", ""),
-];
+    "iso" => "",
+    "img" => "",
+};
 
 fn main() -> std::io::Result<()> {
 
