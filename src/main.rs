@@ -172,6 +172,10 @@ fn main() -> std::io::Result<()> {
         ]);
     }
 
+    table.column_mut(0)
+        .unwrap()
+        .set_cell_alignment(CellAlignment::Right);
+
     println!("{table}");
     Ok(())
 }
