@@ -1,6 +1,6 @@
 # pretty ls
 
-A pretty ls replacement **made in ~200 lines of Rust 🏳️‍🌈**, inspired by the nushell ls.
+A prettier ls replacement, inspired by the nushell ls.
 
 ## Roadmap
 
@@ -10,7 +10,7 @@ A pretty ls replacement **made in ~200 lines of Rust 🏳️‍🌈**, inspired 
 + ✅ Add -a
 + ✅ Add -g
 + ✅ Icons
-+ Colors
-+ Add --long
++ ✅ Colors
++ ✅ Add --long
 + Sorting (hell)
 
