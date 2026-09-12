@@ -282,30 +282,27 @@ fn main() -> std::io::Result<()> {
 
     let mut headers = vec![
         Cell::new("#").fg(Color::Green),
-        Cell::new("name").fg(Color::Green).set_alignment(CellAlignment::Center),
-        Cell::new("type").fg(Color::Green).set_alignment(CellAlignment::Center),
-        Cell::new("size").fg(Color::Green).set_alignment(CellAlignment::Center),
-        Cell::new("modified").fg(Color::Green).set_alignment(CellAlignment::Center),
+        Cell::new("name").fg(Color::Green),
+        Cell::new("type").fg(Color::Green),
+        Cell::new("size").fg(Color::Green),
+        Cell::new("modified").fg(Color::Green),
     ];
 
     if args.long {
         headers.insert(
             1,
-            Cell::new("permissions")
+            Cell::new("permissions");
                 .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
         );
         headers.insert(
             2,
             Cell::new("owner")
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
+                .fg(Color::Green);
         );
         headers.insert(
             3,
             Cell::new("group")
-                .fg(Color::Green)
-                .set_alignment(CellAlignment::Center),
+                .fg(Color::Green);
         );
     }
 
