@@ -6,7 +6,7 @@ use clap::Parser;
 use ignored::is_ignored;
 use phf::phf_map;
 use std::time::{SystemTime, Duration};
-use std::os::unix::fs::{PermissionsExt, MetadataExt};
+use std::os::unix::fs::{PermissionsExt, MetadataExt, FileTypeExt};
 use users::{get_user_by_uid, get_group_by_gid};
 
 #[derive(Parser, Debug)]
@@ -124,9 +124,51 @@ static SPECIAL_ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     ".env" => "",
 };
 
-fn icon_for(path: &std::path::Path, name: &str) -> &'static str {
-    if path.is_dir() {
-        return "󰉋";
+/// Classifies a directory entry by its own type — via `lstat`, so a symlink
+/// is reported as "symlink" (or "broken symlink" if `stat`ing the target
+/// fails) regardless of what it points to, instead of being silently
+/// resolved into "dir"/"file".
+fn file_kind(path: &std::path::Path) -> &'static str {
+    match fs::symlink_metadata(path) {
+        Ok(metadata) => {
+            let file_type = metadata.file_type();
+
+            if file_type.is_symlink() {
+                if fs::metadata(path).is_ok() {
+                    "symlink"
+                } else {
+                    "broken symlink"
+                }
+            } else if file_type.is_dir() {
+                "dir"
+            } else if file_type.is_file() {
+                "file"
+            } else if file_type.is_fifo() {
+                "fifo"
+            } else if file_type.is_socket() {
+                "socket"
+            } else if file_type.is_char_device() {
+                "char device"
+            } else if file_type.is_block_device() {
+                "block device"
+            } else {
+                "unknown"
+            }
+        }
+        Err(_) => "unknown",
+    }
+}
+
+fn icon_for(path: &std::path::Path, name: &str, kind: &str) -> &'static str {
+    match kind {
+        "dir" => return "󰉋",
+        "symlink" => return "",
+        "broken symlink" => return "",
+        "fifo" => return "",
+        "socket" => return "",
+        "char device" => return "",
+        "block device" => return "",
+        _ => {}
     }
 
     if let Some(icon) = SPECIAL_ICONS.get(name) {
@@ -181,7 +223,15 @@ fn permissions_string(path: &std::path::Path) -> std::io::Result<String> {
         .permissions()
         .mode();
 
-    let file_type = if path.is_dir() { "d" } else { "-" };
+    let file_type = match file_kind(path) {
+        "dir" => "d",
+        "symlink" | "broken symlink" => "l",
+        "fifo" => "p",
+        "socket" => "s",
+        "char device" => "c",
+        "block device" => "b",
+        _ => "-",
+    };
 
     let mut result = format!("\x1b[33m{file_type}\x1b[0m");
 
@@ -272,10 +322,11 @@ fn main() -> std::io::Result<()> {
     for (i, (file, path)) in files.iter().enumerate() {
         let metadata = match fs::metadata(path).or_else(|_| fs::symlink_metadata(path)) {
             Ok(m) => m,
-            Err(_) => continue,
+            Err(_) => continue, // entry vanished between read_dir and here; skip it
         };
 
-        let icon = icon_for(path, file);
+        let kind = file_kind(path);
+        let icon = icon_for(path, file, kind);
 
         let owner = get_user_by_uid(metadata.uid())
             .map(|u| u.name().to_string_lossy().into_owned())
@@ -300,20 +351,18 @@ fn main() -> std::io::Result<()> {
         }
 
         // name
-        row.push(
-            if path.is_dir() {
-                Cell::new(format!("{icon} {file}")).fg(Color::Blue)
-            } else {
-                Cell::new(format!("{icon} {file}"))
-            },
-        );
+        row.push(match kind {
+            "dir" => Cell::new(format!("{icon} {file}")).fg(Color::Blue),
+            "symlink" => Cell::new(format!("{icon} {file}")).fg(Color::Cyan),
+            "broken symlink" => Cell::new(format!("{icon} {file}")).fg(Color::Red),
+            "fifo" | "socket" | "char device" | "block device" => {
+                Cell::new(format!("{icon} {file}")).fg(Color::Yellow)
+            }
+            _ => Cell::new(format!("{icon} {file}")),
+        });
 
         // type
-        row.push(if path.is_dir() {
-            Cell::new("dir")
-        } else {
-            Cell::new("file")
-        });
+        row.push(Cell::new(kind));
 
         // size
         row.push(Cell::new(size).fg(Color::Cyan));
