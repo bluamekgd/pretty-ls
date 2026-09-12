@@ -29,6 +29,7 @@ struct Args {
 static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
 
     // Programming languages
+    "asm" => "",
     "rs" => "",
     "py" => "",
     "js" => "",
@@ -47,11 +48,27 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "sh" => "",
     "bash" => "",
     "nix" => "󱄅",
+    "cs" => "",
+    "swift" => "",
+    "zig" => "",
+    "pl" => "",
+    "dart" => "",
+    "hs" => "",
+    "ex" => "",
+    "exs" => "",
+    "erl" => "",
+    "scala" => "",
+    "clj" => "",
+    "cljs" => "",
+    "cljc" => "",
 
     // Web
     "html" => "",
     "css" => "",
     "scss" => "",
+    "vue" => "",
+    "svelte" => "",
+    "graphql" => "",
 
     // Fonts
     "otf" => "",
@@ -66,6 +83,9 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "toml" => "",
     "xml" => "󰗀",
     "lock" => "",
+    "conf" => "",
+    "ini" => "",
+    "sql" => "",
 
     // Documentation
     "md" => "󰈙",
