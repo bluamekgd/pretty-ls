@@ -95,6 +95,7 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
 
     // Data / config
     "json" => "",
+    "jsonc" => "",
     "yaml" => "",
     "yml" => "",
     "toml" => "",
