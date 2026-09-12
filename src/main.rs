@@ -176,7 +176,10 @@ fn relative_time(time: SystemTime) -> String {
 }
 
 fn permissions_string(path: &std::path::Path) -> std::io::Result<String> {
-    let mode = fs::metadata(path)?.permissions().mode();
+    let mode = fs::metadata(path)
+        .or_else(|_| fs::symlink_metadata(path))?
+        .permissions()
+        .mode();
 
     let file_type = if path.is_dir() { "d" } else { "-" };
 
@@ -267,7 +270,10 @@ fn main() -> std::io::Result<()> {
         .set_header(headers);
 
     for (i, (file, path)) in files.iter().enumerate() {
-        let metadata = fs::metadata(path)?;
+        let metadata = match fs::metadata(path).or_else(|_| fs::symlink_metadata(path)) {
+            Ok(m) => m,
+            Err(_) => continue,
+        };
 
         let icon = icon_for(path, file);
 

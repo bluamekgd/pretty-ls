@@ -16,7 +16,7 @@
       {
         packages.default = pkgs.rustPlatform.buildRustPackage {
           pname = "pretty-ls";
-          version = "0.1.0";
+          version = "0.1.1";
 
           src = ./.;
 
