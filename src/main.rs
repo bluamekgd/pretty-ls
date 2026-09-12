@@ -292,17 +292,17 @@ fn main() -> std::io::Result<()> {
         headers.insert(
             1,
             Cell::new("permissions")
-                .fg(Color::Green);
+                .fg(Color::Green)
         );
         headers.insert(
             2,
             Cell::new("owner")
-                .fg(Color::Green);
+                .fg(Color::Green)
         );
         headers.insert(
             3,
             Cell::new("group")
-                .fg(Color::Green);
+                .fg(Color::Green)
         );
     }
 
