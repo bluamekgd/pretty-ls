@@ -124,10 +124,6 @@ static SPECIAL_ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     ".env" => "",
 };
 
-/// Classifies a directory entry by its own type — via `lstat`, so a symlink
-/// is reported as "symlink" (or "broken symlink" if `stat`ing the target
-/// fails) regardless of what it points to, instead of being silently
-/// resolved into "dir"/"file".
 fn file_kind(path: &std::path::Path) -> &'static str {
     match fs::symlink_metadata(path) {
         Ok(metadata) => {
@@ -322,7 +318,7 @@ fn main() -> std::io::Result<()> {
     for (i, (file, path)) in files.iter().enumerate() {
         let metadata = match fs::metadata(path).or_else(|_| fs::symlink_metadata(path)) {
             Ok(m) => m,
-            Err(_) => continue, // entry vanished between read_dir and here; skip it
+            Err(_) => continue,
         };
 
         let kind = file_kind(path);
@@ -340,7 +336,6 @@ fn main() -> std::io::Result<()> {
         let modified = relative_time(metadata.modified()?);
 
         let mut row = vec![
-            // #
             Cell::new((i + 1).to_string()).fg(Color::Green),
         ];
 
@@ -350,7 +345,6 @@ fn main() -> std::io::Result<()> {
             row.push(Cell::new(group));
         }
 
-        // name
         row.push(match kind {
             "dir" => Cell::new(format!("{icon} {file}")).fg(Color::Blue),
             "symlink" => Cell::new(format!("{icon} {file}")).fg(Color::Cyan),
@@ -361,16 +355,9 @@ fn main() -> std::io::Result<()> {
             _ => Cell::new(format!("{icon} {file}")),
         });
 
-        // type
         row.push(Cell::new(kind));
-
-        // size
         row.push(Cell::new(size).fg(Color::Cyan));
-
-        // modified
         row.push(Cell::new(modified).fg(Color::Magenta));
-
-        // #
         row.push(Cell::new((i + 1).to_string()).fg(Color::Green));
 
         table.add_row(row);
