@@ -158,12 +158,12 @@ fn file_kind(path: &std::path::Path) -> &'static str {
 fn icon_for(path: &std::path::Path, name: &str, kind: &str) -> &'static str {
     match kind {
         "dir" => return "󰉋",
-        "symlink" => return "",
-        "broken symlink" => return "",
-        "fifo" => return "",
-        "socket" => return "",
-        "char device" => return "",
-        "block device" => return "",
+        "symlink" => return "",
+        "broken symlink" => return "",
+        "fifo" => return "󰛈",
+        "socket" => return "",
+        "char device" => return "",
+        "block device" => return "󰋊",
         _ => {}
     }
 
