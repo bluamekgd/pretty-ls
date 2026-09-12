@@ -12,11 +12,12 @@
         pkgs = import nixpkgs {
           inherit system;
         };
+	cargoToml = builtins.fromTOML (builtins.readFile ./Cargo.toml);
       in
       {
         packages.default = pkgs.rustPlatform.buildRustPackage {
           pname = "pretty-ls";
-          version = "0.1.2";
+          version = cargoToml.package.version;
 
           src = ./.;
 
