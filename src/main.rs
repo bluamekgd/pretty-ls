@@ -291,8 +291,8 @@ fn main() -> std::io::Result<()> {
     if args.long {
         headers.insert(
             1,
-            Cell::new("permissions");
-                .fg(Color::Green)
+            Cell::new("permissions")
+                .fg(Color::Green);
         );
         headers.insert(
             2,
