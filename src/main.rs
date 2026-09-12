@@ -9,6 +9,14 @@ use std::time::{SystemTime, Duration};
 use std::os::unix::fs::{PermissionsExt, MetadataExt, FileTypeExt};
 use users::{get_user_by_uid, get_group_by_gid};
 
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq)]
+enum SortKey {
+    Name,
+    Size,
+    Modified,
+    Type,
+}
+
 #[derive(Parser, Debug)]
 #[command(about, version)]
 
@@ -24,6 +32,15 @@ struct Args {
 
     #[arg(short, long, help = "Show longer information")]
     long: bool,
+
+    #[arg(short, long, value_enum, default_value_t = SortKey::Name, help = "Sort by name, size, modified or type")]
+    sort: SortKey,
+
+    #[arg(short, long, help = "Reverse the sort order")]
+    reverse: bool,
+
+    #[arg(short = 'D', long, help = "Do not group directories before files")]
+    no_dirs_first: bool,
 }
 
 static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
@@ -295,17 +312,53 @@ fn main() -> std::io::Result<()> {
             continue;
         }
 
-        files.push((name, path));
+        let metadata = match fs::metadata(&path).or_else(|_| fs::symlink_metadata(&path)) {
+            Ok(m) => m,
+            Err(_) => continue,
+        };
+
+        let kind = file_kind(&path);
+        let is_dir = kind == "dir";
+        let modified = metadata.modified().unwrap_or(SystemTime::UNIX_EPOCH);
+        let size = metadata.len();
+
+        files.push((name, path, metadata, kind, is_dir, modified, size));
     }
+
+    files.sort_by(|a, b| {
+        let (name_a, _, _, kind_a, is_dir_a, modified_a, size_a) = a;
+        let (name_b, _, _, kind_b, is_dir_b, modified_b, size_b) = b;
+
+        let dirs_first = if args.no_dirs_first {
+            std::cmp::Ordering::Equal
+        } else {
+            is_dir_b.cmp(is_dir_a)
+        };
+
+        if dirs_first != std::cmp::Ordering::Equal {
+            return dirs_first;
+        }
+
+        let ordering = match args.sort {
+            SortKey::Name => name_a.to_lowercase().cmp(&name_b.to_lowercase()),
+            SortKey::Size => size_a.cmp(size_b),
+            SortKey::Modified => modified_a.cmp(modified_b),
+            SortKey::Type => kind_a
+                .cmp(kind_b)
+                .then_with(|| name_a.to_lowercase().cmp(&name_b.to_lowercase())),
+        };
+
+        if args.reverse { ordering.reverse() } else { ordering }
+    });
 
     let mut table = Table::new();
 
     let mut headers = vec![
-        Cell::new("#").fg(Color::Green),
-        Cell::new("name").fg(Color::Green),
-        Cell::new("type").fg(Color::Green),
-        Cell::new("size").fg(Color::Green),
-        Cell::new("modified").fg(Color::Green),
+        Cell::new("#").fg(Color::Green).set_alignment(CellAlignment::Right),
+        Cell::new("name").fg(Color::Green).set_alignment(CellAlignment::Center),
+        Cell::new("type").fg(Color::Green).set_alignment(CellAlignment::Center),
+        Cell::new("size").fg(Color::Green).set_alignment(CellAlignment::Center),
+        Cell::new("modified").fg(Color::Green).set_alignment(CellAlignment::Center),
     ];
 
     if args.long {
@@ -313,16 +366,19 @@ fn main() -> std::io::Result<()> {
             1,
             Cell::new("permissions")
                 .fg(Color::Green)
+                .set_alignment(CellAlignment::Center)
         );
         headers.insert(
             2,
             Cell::new("owner")
                 .fg(Color::Green)
+                .set_alignment(CellAlignment::Center)
         );
         headers.insert(
             3,
             Cell::new("group")
                 .fg(Color::Green)
+                .set_alignment(CellAlignment::Center)
         );
     }
 
@@ -332,13 +388,8 @@ fn main() -> std::io::Result<()> {
         .load_style(UTF8_FULL_CONDENSED.with_rounded_corners())
         .set_header(headers);
 
-    for (i, (file, path)) in files.iter().enumerate() {
-        let metadata = match fs::metadata(path).or_else(|_| fs::symlink_metadata(path)) {
-            Ok(m) => m,
-            Err(_) => continue,
-        };
-
-        let kind = file_kind(path);
+    for (i, (file, path, metadata, kind, _is_dir, _modified, _size)) in files.iter().enumerate() {
+        let kind: &str = *kind;
         let icon = icon_for(path, file, kind);
 
         let owner = get_user_by_uid(metadata.uid())
