@@ -1,6 +1,6 @@
 # pretty ls
 
-A prettier ls replacement, inspired by the nushell ls.
+A pretty ls replacement, inspired by the nushell ls.
 
 ## Run with Nix
 
