@@ -37,9 +37,13 @@ environment.systemPackages = with pkgs; [
 
 Get the binary from the [releases](https://github.com/BluamekGD/pretty-ls/releases/latest) page.
 
-## Windows and macOS 
+## Windows
 
-Only Linux support for now, sorry! (macOS *might* work since it's also Unix, but it also might not and I don't care.)
+Not supported, sorry!
+
+## macOS
+
+There's no official support but since macOS is a Unix-based system it ***might*** work. Try it but don't expect it to work perfectly.
 
 #
 
