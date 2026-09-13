@@ -7,3 +7,32 @@ A prettier ls replacement, inspired by the nushell ls.
 ```nix
 nix run github:BluamekGD/pretty-ls
 ```
+
+This compiles and runs the latest source.
+
+## NixOS
+
+1. Add this input to your flake.
+
+```nix
+pretty-ls = {
+  url = "github:BluamekGD/pretty-ls";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+```
+
+2. Add to system (or home) packages
+
+```nix
+environment.systemPackages = with pkgs; [
+  inputs.pretty-ls.packages.${pkgs.stdenv.hostPlatform.system}.default
+];
+```
+
+3. Rebuild NixOS
+
+## Other distributions
+
+Get the binary from the [releases](https://github.com/BluamekGD/pretty-ls/releases/latest) page.
+
+### Note: I used Claude for sorting and debugging so if y'all care about that then keep that in mind.
