@@ -10,6 +10,8 @@ nix run github:BluamekGD/pretty-ls
 
 This compiles and runs the latest source.
 
+Nothing gets installed on your system. If you wanna install it, see the instructions below.
+
 ## NixOS
 
 1. Add this input to your flake.
