@@ -122,4 +122,4 @@ This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) fo
 
 # Note
 
-### I used Claude for sorting and debugging so if y'all care about that then keep that in mind.
+I used Claude for sorting and debugging so if y'all care about that then keep that in mind.
