@@ -14,7 +14,7 @@ A pretty ls replacement, inspired by the nushell ls.
 
 ## Usage:
 
-### pls \[Options\] \[Path\]
+### ```pls \[Options\] \[Path\]```
 
 Arguments:
 
@@ -33,25 +33,25 @@ Options:
 
 ## Examples:
 
-+ List files in the home directory and display longer information.
+- List files in the home directory and display longer information.
 
 ```bash
 pls -l ~
 ```
 
-+ List files in ./pretty-ls and hide files tracked by Git.
+- List files in ./pretty-ls and hide files tracked by Git.
 
 ```bash
 pls -g pretty-ls
 ```
 
-+ List files in Pictures and show hidden files. (...)
+- List files in Pictures and show hidden files. (...)
 
 ```bash
 pls -a Pictures
 ```
 
-+ List files in Downloads and sort by file size (smallest to biggest, add `-r` to go from biggest to smallest).
+- List files in Downloads and sort by file size (smallest to biggest, add `-r` to go from biggest to smallest).
 
 ```bash
 pls -s Downloads
