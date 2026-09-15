@@ -2,6 +2,8 @@
 
 A pretty ls replacement, inspired by the nushell ls.
 
+![Showcase](showcase.png)
+
 ## Run with Nix
 
 ```nix
@@ -35,7 +37,7 @@ environment.systemPackages = with pkgs; [
 
 ## Other Linux distributions
 
-Get the binary from the [releases](https://github.com/BluamekGD/pretty-ls/releases/latest) page.
+Get the binary from the [Releases](releases/latest) page.
 
 ## Windows
 
