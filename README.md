@@ -7,6 +7,7 @@ A pretty ls replacement, inspired by the nushell ls.
 ### Features:
 
 + Hide files ignored by Git
++ Nice looking table
 + Colorized output
 + Sorting
 + Icons
@@ -17,18 +18,18 @@ A pretty ls replacement, inspired by the nushell ls.
 
 Arguments:
 
-+ [\Path\] Directory to list
++ \[Path\] Directory to list
 
 Options:
 
-+ -a, --all            Show hidden files
-+ -g, --gitignore      Hide files ignored by Git
-+ -l, --long           Show longer information
-+ -s, --sort <SORT>    Sort by name, size, modified or type \[default: name\] \[possible values: name, size, modified, type\]
-+ -r, --reverse        Reverse the sort order
-+ -D, --no-dirs-first  Do not group directories before files
-+ -h, --help           Print help
-+ -V, --version        Print version
++ -a, --all - Show hidden files
++ -g, --gitignore - Hide files ignored by Git
++ -l, --long - Show longer information
++ -s, --sort <SORT> - Sort by name, size, modified or type \[default: name\] \[possible values: name, size, modified, type\]
++ -r, --reverse - Reverse the sort order
++ -D, --no-dirs-first - Do not group directories before files
++ -h, --help - Print help
++ -V, --version - Print version
 
 ## Examples:
 
