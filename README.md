@@ -14,7 +14,7 @@ A pretty ls replacement, inspired by the nushell ls.
 
 ## Usage:
 
-### ```pls \[Options\] \[Path\]```
+### ```pls [Options] [Path]```
 
 Arguments:
 
