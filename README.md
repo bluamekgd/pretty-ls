@@ -37,7 +37,7 @@ environment.systemPackages = with pkgs; [
 
 ## Other Linux distributions
 
-Get the binary from the [Releases](releases/latest) page.
+Get the binary from the [Releases](../../releases/latest) page.
 
 ## Windows
 
