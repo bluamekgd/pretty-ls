@@ -138,6 +138,7 @@ static ICONS: phf::Map<&'static str, &'static str> = phf_map! {
     "ico" => "",
     "bmp" => "",
     "avif" => "",
+    "xcf" => "",
 
     // Audio / video
     "mp3" => "",
