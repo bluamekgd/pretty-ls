@@ -120,6 +120,6 @@ There's no official support but since macOS is a Unix-based system it ***might**
 
 This project is licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
 
-#
+# Note
 
-### Note: I used Claude for sorting and debugging so if y'all care about that then keep that in mind.
+### I used Claude for sorting and debugging so if y'all care about that then keep that in mind.
